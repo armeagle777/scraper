@@ -42,18 +42,12 @@ export const monitorePage = async ()=>{
                 result.push(hrefObj)
             }
         }
-
-
-
-
         return result
     },url)
-
-  
-    console.log('links',links)
-
 
 
     await page.close()
     await browser.close();
+
+    return links
 }
