@@ -1,11 +1,6 @@
 import puppeteer from 'puppeteer';
+import { HrefObj } from '../utils/interfaces'
 
-
-interface HrefObj{
-    href:string
-    text:string
-    status:number
-}
 
 
 export const monitorePage = async ()=>{
@@ -18,7 +13,9 @@ export const monitorePage = async ()=>{
     })
 
     let page = await browser.newPage();
+    
     page.on("console", (consoleObj) => console.log(consoleObj.text()));
+
     await page.goto(url, {
         waitUntil: 'domcontentloaded',
     });
@@ -32,12 +29,10 @@ export const monitorePage = async ()=>{
             if(href){
                 const text = link.innerText?.length <= 50 ? link.innerText : link.innerText.substring(0,51) + "..."
                 const absolutePath = href?.includes("http") ? href : url + href
-                const statusCode = 200 || 404
                 
                 const hrefObj = {
                     href:absolutePath,
                     text,
-                    status:statusCode
                 }
                 result.push(hrefObj)
             }

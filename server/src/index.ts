@@ -9,6 +9,7 @@ import { resolvers } from "./schema/resolvers";
 import { typeDefs } from "./schema/typeDefs";
 import { monitorePage } from "./utils/monitore-page";
 
+import { checkUrlsStatus } from "./utils/check-urls-status"
 
 
 const app = express()
@@ -19,16 +20,18 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 9000
 
 const startApp = async()=>{
 
 
-    const links = await monitorePage()
-    // console.log('-------', links)
+    const pageLinks = await monitorePage()
+    const checkedUrls = await checkUrlsStatus(pageLinks)
+    
+
 
     //Starting the App
-    console.log('PORT',PORT)
+
     await  AppDataSource.initialize()
     const server = new ApolloServer({typeDefs, resolvers})
     await server.start()
